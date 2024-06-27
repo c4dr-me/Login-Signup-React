@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 
 exports.signup = async (req, res) => {
     const { email, password } = req.body;
-    // console.log('signupUser called with:', email, password);
     try {
         const userExists = await User.findOne({ email });
         if (userExists) {
@@ -15,7 +14,6 @@ exports.signup = async (req, res) => {
         const user = await User.create({ email, password: hashedPassword });
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
         res.status(201).json({ token });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -24,7 +22,6 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
     const { email, password } = req.body;
-    console.log('loginUser called with:', email, password);
     try {
         const user = await User.findOne({ email });
 
@@ -45,3 +42,4 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
