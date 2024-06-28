@@ -8,8 +8,14 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: function() { return !this.googleId; }, // Required if no googleId
     },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true, // Unique index only for docs with googleId
+    },
+    picture: String,
     dateCreated: {
         type: Date,
         default: Date.now, 
