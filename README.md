@@ -33,9 +33,7 @@ To run this project locally, follow these steps:
    ```
 3. Create a `.env` file in the root directory with the following variables:
    ```
-   PORT=5000
    MONGO_URI=<your_mongodb_uri>
-   JWT_SECRET=<your_jwt_secret>
    ```
 4. Start the backend server.
    ```bash
