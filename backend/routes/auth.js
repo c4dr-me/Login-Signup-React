@@ -2,12 +2,29 @@ const express = require('express');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { check, validationResult } = require('express-validator');
+const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
 
-router.post('/signup', async (req, res) => {
+
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: 'Too many login attempts from this IP, please try again later'
+});
+
+router.post('/signup', [
+    check('email').isEmail().withMessage('Enter a valid email address'),
+    check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const errorMessages = errors.array().map(error => error.msg);
+        return res.status(400).json({ message: 'Signup failed or user already exists', errors: errorMessages });
+    }
+
     const { email, password } = req.body;
-    console.log('Signup route hit');
     try {
         const userExists = await User.findOne({ email });
         if (userExists) {
@@ -19,32 +36,50 @@ router.post('/signup', async (req, res) => {
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        res.status(201).json({ token });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false, // set to true in production
+            sameSite: 'strict', // adjust according to your requirements
+            maxAge: 3600000 // cookie expiry set to match token expiry
+        }).status(201).send('Signup successful');
     } catch (error) {
         console.error('Error in signup:', error.message);
         res.status(500).json({ message: error.message });
     }
 });
 
-router.post('/login', async (req, res) => {
-    console.log('Login route hit');
+router.post('/login', loginLimiter, [
+    check('email').isEmail().withMessage('Enter a valid email address'),
+    check('password').exists().withMessage('Password is required')
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { email, password } = req.body;
-    console.log('Email:', email, 'Password:', password);
     try {
         const user = await User.findOne({ email });
+
         if (!user) {
-            console.log('User not found');
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
+
         if (!isMatch) {
-            console.log('Password does not match');
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+
+       
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true, // set to true in production
+            sameSite: 'strict', // adjust according to your requirements
+            maxAge: 3600000 // cookie expiry set to match token expiry
+        }).send('Login successful');
     } catch (error) {
         console.error('Error in login:', error.message);
         res.status(500).json({ message: error.message });

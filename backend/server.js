@@ -5,12 +5,15 @@ const connectDB = require('./config/db');
 
 const authRoutes = require('./routes/auth');
 
+const cookieParser = require('cookie-parser');
 const app = express();
+
+
 
 // Middleware
 app.use(express.json());
 app.use(cors()); 
-
+app.use(cookieParser());
 
 connectDB();
 
