@@ -13,7 +13,7 @@ const cors = require('cors');
 const User = require('./models/User');
 const jwt = require('jsonwebtoken');
 app.use(cors({
-  origin: 'https://localhost:5173/' || 'https://login-signup-react-t8ka.onrender.com/',
+  origin: 'https://localhost:5173/' || 'https://login-signup-react-t8ka.onrender.com/' || 'https://login-signup-react-1.onrender.com/',
   credentials: true
 }));
 
