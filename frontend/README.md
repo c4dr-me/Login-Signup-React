@@ -1,8 +1,81 @@
-# React + Vite
+# Login-Signup-React Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project implements a secure authentication system using React for the frontend and Node.js with Express and MongoDB for the backend.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Authentication**: Secure signup and login using bcrypt for password hashing and JWT tokens for authentication.
+- **Frontend**: Built with React, utilizing React Router DOM for navigation.
+- **Backend**: Node.js server with Express framework, MongoDB for data storage, and Mongoose for ORM.
+- **Security**: Rate limiting, input validation, and cookies for safe JWT token transfer.
+- **Deployment**: [Live Demo](https://login-signup-react-t8ka.onrender.com/)
+
+## Installation
+
+To run this project locally, follow these steps:
+
+### Prerequisites
+
+- Node.js and npm installed on your machine.
+- MongoDB installed locally or accessible remotely.
+- Clone the repository from GitHub.
+
+### Backend Setup
+
+1. Clone the repository.
+   ```bash
+   git clone https://github.com/c4dr-me/Login-Signup-React.git
+   cd Login-Signup-React/backend
+   ```
+2. Install dependencies.
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file in the root directory with the following variables:
+   ```
+   PORT=5000
+   MONGO_URI=<your_mongodb_uri>
+   JWT_SECRET=<your_jwt_secret>
+   ```
+4. Start the backend server.
+   ```bash
+   npm start
+   ```
+
+### Frontend Setup
+
+1. Navigate to the `frontend` directory.
+   ```bash
+   cd ../frontend
+   ```
+2. Install dependencies.
+   ```bash
+   npm install
+   ```
+3. Start the frontend development server.
+   ```bash
+   npm run dev
+   ```
+
+## Usage
+
+- Open your browser and go to `http://localhost:5173` to access the frontend.
+- Sign up with a new account or log in with an existing one.
+- Test various authentication functionalities such as error handling, successful login/signup, etc.
+- Ensure the backend server is running on `http://localhost:5000`.
+
+## Deployment
+
+This project is currently deployed on Render. To deploy it on your own Render account:
+
+1. Create a new Render service for both frontend and backend.
+2. Configure environment variables on Render for `MONGO_URI`.
+3. Deploy the backend directory and ensure the frontend build is set up correctly using a postinstall script (already done in backend package.json).
+
+## Contributing
+
+Contributions are welcome! Fork this repository, create new branch, make changes, and submit a pull request.
+
+## License
+
+This project is licensed under the [ISC License](https://opensource.org/licenses/ISC).
