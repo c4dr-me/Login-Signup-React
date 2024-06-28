@@ -78,4 +78,4 @@ Contributions are welcome! Fork this repository, create new branch, make changes
 
 ## License
 
-This project is licensed under the [ISC License](license).
+This project is licensed under the [ISC License](./LICENSE).
