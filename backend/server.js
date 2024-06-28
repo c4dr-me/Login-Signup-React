@@ -17,14 +17,15 @@ app.use(cookieParser());
 
 const path = require("path");
 
-app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(path.join(__dirname, "./dist")));
+console.log(path.join(__dirname, "./dist"));
 
 connectDB();
 
 // Routes
 app.use('/api/auth', authRoutes); 
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
