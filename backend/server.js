@@ -14,29 +14,27 @@ const User = require('./models/User');
 const jwt = require('jsonwebtoken');
 
 const allowedOrigins = [
-  'https://localhost:5173',
-  'http://localhost:5000',
-  'https://login-signup-react-t8ka.onrender.com',
+  'http://localhost:5173',
   'https://login-signup-react-1.onrender.com',
 ];
 
 const corsOptions = {
-  origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1) {
-          callback(null, true);
-      } else {
-          callback(new Error('Not allowed by CORS'));
-      }
-  },
+ origin: function (origin, callback) {
+  console.log("Origin received:", origin); // Add logging to debug
+  if (!origin) return callback(null, true);
+  if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+  } else {
+      callback(new Error('Not allowed by CORS'));
+  }
+},
   credentials: true,
 };
 
 app.use(cors(corsOptions));
 
-const helmet = require('helmet');
-app.use(helmet());
+// const helmet = require('helmet');
+// app.use(helmet());
 
 // Middleware setup
 app.use(express.json());
@@ -70,13 +68,15 @@ app.get('/auth/google/callback',
   });
 
   app.post('/api/auth/google-login', async (req, res) => {
-    const { token }  = req.body;
+    const { token } = req.body;
+    console.log("Token received from Google:", token);
     async function verify() {
       const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
       const ticket = await client.verifyIdToken({
           idToken: token,
           audience: process.env.GOOGLE_CLIENT_ID,  
       });
+      console.log("Ticket:", ticket);
       const payload = ticket.getPayload();
       const userid = payload['sub'];
       
@@ -92,7 +92,7 @@ app.get('/auth/google/callback',
       }
       // Generate a token (or use session)
       const userToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-      res.cookie('token', userToken, { httpOnly: true, secure: true, sameSite: 'None', });
+      res.cookie('token', userToken, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: 'None', });
     res.status(200).json({ message: "Google login successful" });
     }
    verify().catch(error => {
