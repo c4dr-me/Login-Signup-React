@@ -69,14 +69,14 @@ app.get('/auth/google/callback',
 
   app.post('/api/auth/google-login', async (req, res) => {
     const { token } = req.body;
-    console.log("Token received from Google:", token);
+    // console.log("Token received from Google:", token);
     async function verify() {
       const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
       const ticket = await client.verifyIdToken({
           idToken: token,
           audience: process.env.GOOGLE_CLIENT_ID,  
       });
-      console.log("Ticket:", ticket);
+      // console.log("Ticket:", ticket);
       const payload = ticket.getPayload();
       const userid = payload['sub'];
       
