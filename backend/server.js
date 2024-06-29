@@ -92,7 +92,10 @@ app.get('/auth/google/callback',
       res.cookie('token', userToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'None', });
     res.status(200).json({ message: "Google login successful" });
     }
-    verify().catch(console.error);
+   verify().catch(error => {
+  console.error(error);
+  res.status(500).json({ message: "An error occurred during Google login" });
+});
   });
 
 // Serve static files (example with React frontend)
