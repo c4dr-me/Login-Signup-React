@@ -15,6 +15,7 @@ const jwt = require('jsonwebtoken');
 
 const allowedOrigins = [
   'https://localhost:5173',
+  'http://localhost:5000',
   'https://login-signup-react-t8ka.onrender.com',
   'https://login-signup-react-1.onrender.com',
 ];
