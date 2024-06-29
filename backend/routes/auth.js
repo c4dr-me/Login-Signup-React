@@ -38,7 +38,7 @@ router.post('/signup', [
 
         res.cookie('token', token, {
             httpOnly: true,
-            secure: false, // set to true in production
+            secure: process.env.NODE_ENV === "production", // set to true in production
             sameSite: 'strict', // adjust according to your requirements
             maxAge: 3600000 // cookie expiry set to match token expiry
         }).status(201).send('Signup successful');
