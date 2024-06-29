@@ -89,7 +89,7 @@ app.get('/auth/google/callback',
       }
       // Generate a token (or use session)
       const userToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-      res.cookie('token', userToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'None', });
+      res.cookie('token', userToken, { httpOnly: true, secure: true, sameSite: 'None', });
     res.status(200).json({ message: "Google login successful" });
     }
    verify().catch(error => {
