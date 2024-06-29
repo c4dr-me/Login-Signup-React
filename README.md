@@ -34,6 +34,7 @@ To run this project locally, follow these steps:
 3. Create a `.env` file in the root directory with the following variables:
    ```
    MONGO_URI=<your_mongodb_uri>
+   NODE_ENV=development
    ```
 4. Start the backend server.
    ```bash
