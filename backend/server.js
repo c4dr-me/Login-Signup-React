@@ -13,27 +13,30 @@ const cors = require('cors');
 const User = require('./models/User');
 const jwt = require('jsonwebtoken');
 
-// const allowedOrigins = [
-//   'https://localhost:5173',
-//   'http://localhost:5000',
-//   'https://login-signup-react-t8ka.onrender.com',
-//   'https://login-signup-react-1.onrender.com',
-// ];
+const allowedOrigins = [
+  'https://localhost:5173',
+  'http://localhost:5000',
+  'https://login-signup-react-t8ka.onrender.com',
+  'https://login-signup-react-1.onrender.com',
+];
 
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//       // Allow requests with no origin (like mobile apps or curl requests)
-//       if (!origin) return callback(null, true);
-//       if (allowedOrigins.indexOf(origin) !== -1) {
-//           callback(null, true);
-//       } else {
-//           callback(new Error('Not allowed by CORS'));
-//       }
-//   },
-//   credentials: true,
-// };
+const corsOptions = {
+  origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) !== -1) {
+          callback(null, true);
+      } else {
+          callback(new Error('Not allowed by CORS'));
+      }
+  },
+  credentials: true,
+};
 
-app.use(cors);
+app.use(cors(corsOptions));
+
+const helmet = require('helmet');
+app.use(helmet());
 
 // Middleware setup
 app.use(express.json());

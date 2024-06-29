@@ -37,7 +37,7 @@ const Login = () => {
     setLoginFailed(false);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${import.meta.env.VITE_API_BASE_URL}/api/auth/login`,
         {
           email,
           password,
@@ -67,7 +67,7 @@ const Login = () => {
       const { credential } = response;
      // console.log("Credential received from Google:", credential);
       const googleResponse = await axios.post(
-        "http://localhost:5000/api/auth/google-login",
+        `${import.meta.env.VITE_API_BASE_URL}/api/auth/google-login`,
         {
           token: credential,
         }
