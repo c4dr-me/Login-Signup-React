@@ -59,6 +59,7 @@ const Signup = () => {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            autoComplete='email'
                             required
                         />
                     </div>
